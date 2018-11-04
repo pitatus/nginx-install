@@ -1,0 +1,20 @@
+{%- set addr = salt.network.ip_addrs()[0] -%}
+
+server {
+    listen {{ addr }}:3200 default_server;
+    server_name _;
+    error_page 404 /domain-error.html;
+
+    # Everything is a 404
+    location / {
+      return 404; #return the code 404
+    }
+
+    # Custom Error Page
+    location = /domain-error.html {
+        root /var/www/error;
+        internal;
+    }
+}
+
+

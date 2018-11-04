@@ -1,0 +1,20 @@
+{%- set addr = salt.network.ip_addrs()[0] -%}
+
+server {
+    listen {{ addr }}:3200;
+    server_name www.example.com;
+
+    location / {
+        proxy_set_header Host www.example.com;
+        proxy_set_header Host def;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://localhost:3400/;
+        proxy_read_timeout 90;
+
+        try_files $uri $uri/ =404;
+    }
+}
+
+

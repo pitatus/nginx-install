@@ -1,0 +1,16 @@
+{%- set addr = salt.network.ip_addrs()[0] -%}
+
+server {
+    listen {{ addr }}:80;
+
+    root /var/www/html;
+    index index.html index.htm;
+
+    server_name {{ addr }};
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+
